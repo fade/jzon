@@ -716,7 +716,7 @@ Now consider the following scenarios:
 ```lisp
 (jzon:stringify (make-instance 'person :name "Anya" :job nil
                                :married nil :children nil)
-                :pretty t :stream t)`
+                :pretty t :stream t)
 ```
 ``` json
 {
@@ -808,7 +808,7 @@ now
 ```lisp
 (jzon:stringify (make-instance 'person :name "Anya" :job nil
                                :married nil :children nil) 
-                :pretty t :stream t)`
+                :pretty t :stream t)
 ```
 ``` json
 {
