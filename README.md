@@ -117,7 +117,7 @@ jzon cannonically maps types per the following chart:
 
 **Note** the usage of symbol `cl:null` as a sentinel for JSON `null`
 
-When writing, additional values are supported. Please see the section [jzon:stringify](#writing).
+When writing, additional values are supported. Please see the section [jzon:stringify](#jzonstringify).
 
 # Usage
 
