@@ -1866,5 +1866,18 @@ see `write-object'"
          (with-output-to-string (stream)
            (stringify-to stream)))
         (t
-          (stringify-to stream)
-          nil)))))
+         (stringify-to stream)
+         nil)))))
+
+;; NOTE: Borrowed from UIOP.
+(defun native-namestring (x)
+  "From a non-wildcard CL pathname, a return namestring suitable for passing to the operating system"
+  (when x
+    (let ((p (pathname x)))
+      #+clozure (with-pathname-defaults () (ccl:native-translated-namestring p)) ; see ccl bug 978
+      #+(or cmucl scl) (ext:unix-namestring p nil)
+      #+sbcl (sb-ext:native-namestring p)
+      #-(or clozure cmucl sbcl scl)
+      (os-cond
+       ((os-unix-p) (unix-namestring p))
+       (t (namestring p))))))
