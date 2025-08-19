@@ -51,7 +51,17 @@ jzon is on both Quicklisp and Ultralisp, and can be loaded via
 
 Most users will simply use [`jzon:parse`](#jzonparse) for reading, and [`jzon:stringify`](#jzonstringify) for writing. These mirror the [JSON methods in JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON).
 
-**Note**: Examples in this README can be copy-pasted in your REPL if you've got a nickname set up for jzon. To follow along with the examples, use
+**Note**: Examples in this README can be copy-pasted in your REPL if you've got a nickname set up for jzon. To follow along with the examples, add a local nickname depending to your common lisp implementation:
+
+#### SBCL
+
+```lisp
+(sb-ext:add-package-local-nickname '#:jzon '#:com.inuoe.jzon)
+```
+
+#### Other
+
+If you have an up to date version of `uiop` installed:
 
 ```lisp
 (uiop:add-package-local-nickname '#:jzon '#:com.inuoe.jzon)
