@@ -564,7 +564,7 @@ see `json-atom'"
   (let* ((step (lambda () (read-char in nil)))
          (pos (lambda ()
                 (let ((n (ignore-errors (file-position in))))
-                  (if (and n (ignore-errors (file-position in 0)))
+                  (if (and n (> n 0) (ignore-errors (file-position in 0)))
                     (multiple-value-bind (line col) (%calc-pos step n)
                       (file-position in n)
                       (values line col))

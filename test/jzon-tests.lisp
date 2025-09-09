@@ -722,6 +722,9 @@
 (test parse-needs-whitespace-for-bare-tokens-1234quote
   (signals (json-parse-error) (parse "1234\"" :allow-multiple-content t)))
 
+(test parse-signals-json-error-on-empty-stream
+  (signals (json-parse-error) (with-input-from-string (s "") (parse s))))
+
 (def-suite incremental :in parsing)
 (in-suite incremental)
 
