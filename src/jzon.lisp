@@ -1869,7 +1869,31 @@ see `write-object'"
          (stringify-to stream)
          nil)))))
 
-;; NOTE: Borrowed from UIOP.
+;; --- Borrowed from UIOP --- ;;
+
+(defun featurep (x &optional (*features* *features*))
+  "Checks whether a feature expression X is true with respect to the *FEATURES* set,
+as per the CLHS standard for #+ and #-. Beware that just like the CLHS,
+we assume symbols from the KEYWORD package are used, but that unless you're using #+/#-
+your reader will not have magically used the KEYWORD package, so you need specify
+keywords explicitly."
+  (cond
+    ((atom x) (and (member x *features*) t))
+    ((eq :not (car x)) (assert (null (cddr x))) (not (featurep (cadr x))))
+    ((eq :or (car x)) (some #'featurep (cdr x)))
+    ((eq :and (car x)) (every #'featurep (cdr x)))
+    (t (parameter-error "~S: malformed feature specification ~S" 'featurep x))))
+
+(defun os-macosx-p ()
+  "Is the underlying operating system MacOS X?"
+  ;; OS-MACOSX is not mutually exclusive with OS-UNIX,
+  ;; in fact the former implies the latter.
+  (featurep '(:or :darwin (:and :allegro :macosx) (:and :clisp :macos))))
+
+(defun os-unix-p ()
+  "Is the underlying operating system some Unix variant?"
+  (or (featurep '(:or :unix :cygwin :haiku :linux)) (os-macosx-p)))
+
 (defun native-namestring (x)
   "From a non-wildcard CL pathname, a return namestring suitable for passing to the operating system"
   (when x
@@ -1878,6 +1902,6 @@ see `write-object'"
       #+(or cmucl scl) (ext:unix-namestring p nil)
       #+sbcl (sb-ext:native-namestring p)
       #-(or clozure cmucl sbcl scl)
-      (os-cond
-       ((os-unix-p) (unix-namestring p))
-       (t (namestring p))))))
+      (cond
+        ((os-unix-p) (unix-namestring p))
+        (t (namestring p))))))
