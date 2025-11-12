@@ -34,10 +34,10 @@ jobs:
       - name: Install SBCL
         if: steps.cache-sbcl.outputs.cache-hit != 'true'
         run: |
-          $uri = "http://downloads.sourceforge.net/sbcl/sbcl-2.0.0-x86-64-windows-binary.msi"
+          $uri = "http://downloads.sourceforge.net/sbcl/sbcl-2.5.0-x86-64-windows-binary.msi"
           Invoke-WebRequest -Uri $uri -OutFile "$env:TEMP\sbcl.msi" -UserAgent "_"
           Start-Process "msiexec" -ArgumentList "/a", "$env:TEMP\sbcl.msi", "/qbn", "TARGETDIR=$env:TEMP\sbcl\" -Wait -NoNewWindow
-          $sbclSubDir = "$env:TEMP\sbcl\PFiles\Steel Bank Common Lisp\2.0.0\"
+          $sbclSubDir = "$env:TEMP\sbcl\PFiles\Steel Bank Common Lisp\"
           Move-Item -Path $sbclSubDir -Destination "$HOME\sbcl\"
       - name: Configure SBCL
         run: |
